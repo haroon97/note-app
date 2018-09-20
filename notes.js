@@ -1,5 +1,3 @@
-console.log('starting notes.js');
-
 const fs = require('fs');
 
 let fetchNotes = () => {
@@ -33,10 +31,11 @@ const addNote = (title, body) => {
 };
 
 const getAll = () => {
-  console.log('Getting all notes');
+  return fetchNotes();
 };
 
 const removeNote = (title) => {
+  debugger;
   let notes = fetchNotes();
   let filteredNotes = notes.filter((note) => note.title !== title);
   saveNotes(filteredNotes);

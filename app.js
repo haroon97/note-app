@@ -1,15 +1,36 @@
-console.log('Starting App')
-
 const _ = require('lodash');
 const fs = require('fs');
 const yargs = require('yargs');
 
 const notes = require('./notes');
 
-const argv = yargs.argv;
+const noteTitle = {
+  describe: 'Title of note',
+  demand: true,
+  alias: 't'
+};
+
+const noteBody = {
+  describe: 'Body of note',
+  demand: true,
+  alias: 'b'
+}
+
+const argv = yargs
+  .command('add', 'Add a new note', {
+    title: noteTitle,
+    body: noteBody
+  })
+  .command('list', 'List all notes')
+  .command('remove', 'Remove a note', {
+    title: noteTitle
+  })
+  .command('read', 'Read a note', {
+    title: noteTitle
+  })
+  .help()
+  .argv;
 let command = argv._[0];
-console.log('Command', command);
-console.log('Yargs', argv);
 
 if (command === 'add') {
   let note = notes.addNote(argv.title, argv.body);
@@ -24,7 +45,9 @@ if (command === 'add') {
   }
 }
 else if (command === 'list') {
-  notes.getAll();
+  let allNotes = notes.getAll();
+  console.log(`listing out ${allNotes.length} note(s)`);
+  allNotes.forEach((note) => console.log(`Title: ${note.title}  Body: ${note.body}`))
 }
 else if (command === 'remove') {
   let notesRemoved = notes.removeNote(argv.title);
